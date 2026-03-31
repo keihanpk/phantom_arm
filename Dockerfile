@@ -5,7 +5,7 @@ WORKDIR /app
 COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir aiohttp
 
-COPY relay_server.py /app/relay_server.py
+COPY webservice/signaling_server.py /app/signaling_server.py
 
 ENV PYTHONUNBUFFERED=1
 
