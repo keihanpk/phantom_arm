@@ -10,11 +10,18 @@ async def send_events(ws):
     seq = 1
 
     events = [
-        {"seq": seq , "kind": "mouse_move", "dx": 0, "dy": -40},
-        {"seq": seq +1 , "kind": "mouse_button", "button": "left", "state": "down"},
-        {"seq": seq  + 2, "kind": "mouse_button", "button": "left", "state": "up"},
-        {"seq": seq  + 3, "kind": "key", "key": "space", "state": "press"},
-        {"seq": seq  + 4, "kind": "key", "key": "space", "state": "release"},
+        {"seq": seq , "kind": "mouse_move", "dx": 200, "dy": -200},
+        {"seq": seq +2  , "kind": "mouse_move", "dx": -200, "dy": 200},
+        {"seq": seq +3  , "kind": "mouse_move", "dx": -200, "dy": -200},
+        {"seq": seq +4  , "kind": "mouse_move", "dx": 200, "dy": 200},
+        {"seq": seq +5, "kind": "mouse_move", "dx": 200, "dy": -200},
+        {"seq": seq +6  , "kind": "mouse_move", "dx": -200, "dy": 200},
+        {"seq": seq +7  , "kind": "mouse_move", "dx": -200, "dy": -200},
+        {"seq": seq +8  , "kind": "mouse_move", "dx": 200, "dy": 200},
+        # {"seq": seq +1 , "kind": "mouse_button", "button": "left", "state": "down"},
+        # {"seq": seq  + 2, "kind": "mouse_button", "button": "left", "state": "up"},
+        # {"seq": seq  + 3, "kind": "key", "key": "space", "state": "press"},
+        # {"seq": seq  + 4, "kind": "key", "key": "space", "state": "release"},
     ]
 
     await asyncio.sleep(1.0)
