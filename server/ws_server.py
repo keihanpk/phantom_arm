@@ -1,23 +1,36 @@
 import asyncio
 from websockets.asyncio.server import serve
+from websockets.exceptions import ConnectionClosed
 
 clients = set()
 
 async def recv_loop(ws):
-    async for msg in ws:
-        print(f"[server recv] {msg}")
+    try:
+        async for msg in ws:
+            print(f"\n[server recv] {msg}")
 
-        # broadcast received message to all connected clients
-        for client in list(clients):
-            if client.closed:
+            dead = []
+            for client in clients:
+                if client is ws:
+                    continue
+                try:
+                    await client.send(f"[broadcast] {msg}")
+                except ConnectionClosed:
+                    dead.append(client)
+
+            for client in dead:
                 clients.discard(client)
-                continue
-            await client.send(f"[broadcast] {msg}")
+
+    except ConnectionClosed:
+        pass
 
 async def send_loop(ws):
-    while True:
-        msg = await asyncio.to_thread(input, "server send> ")
-        await ws.send(f"[server] {msg}")
+    try:
+        while True:
+            msg = await asyncio.to_thread(input, "server send> ")
+            await ws.send(f"[server] {msg}")
+    except ConnectionClosed:
+        pass
 
 async def handler(ws):
     print("client connected")
@@ -27,8 +40,6 @@ async def handler(ws):
             recv_loop(ws),
             send_loop(ws),
         )
-    except Exception as e:
-        print("server error:", e)
     finally:
         clients.discard(ws)
         print("client disconnected")
